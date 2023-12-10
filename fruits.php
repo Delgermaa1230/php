@@ -63,7 +63,7 @@
 </head>
 <body>
 
-<form  method="post" action="">
+<form method="post" action="">
     <label for="available-fruits">Сонгох боломжит жимснүүд:</label>
     <select id="available-fruits" name="available-fruits[]" multiple>
         <option value="apple">Алим</option>
@@ -101,14 +101,37 @@ function moveSelectedOptions(sourceId, destinationId) {
             i--; 
         }
     }
+
+    saveSelectedOptionsToCookie();
 }
+
+function saveSelectedOptionsToCookie() {
+    var selectedOptions = [];
+    var selectedFruitsSelect = document.getElementById('selected-fruits');
+
+    for (var i = 0; i < selectedFruitsSelect.options.length; i++) {
+        selectedOptions.push(selectedFruitsSelect.options[i].value);
+    }
+
+    document.cookie = "selectedOptions=" + JSON.stringify(selectedOptions) + "; path=/";
+}
+
+function loadSelectedOptionsFromCookie() {
+    var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)selectedOptions\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+    if (cookieValue) {
+        var selectedOptions = JSON.parse(cookieValue);
+        var selectedFruitsSelect = document.getElementById('selected-fruits');
+
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var newOption = new Option(selectedOptions[i], selectedOptions[i]);
+            selectedFruitsSelect.add(newOption);
+        }
+    }
+}
+
+loadSelectedOptionsFromCookie();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
